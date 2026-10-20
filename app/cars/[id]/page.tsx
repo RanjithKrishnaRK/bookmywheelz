@@ -1,4 +1,4 @@
-iimport { Suspense } from 'react';
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { supabase, rupees, type Car } from '@/lib/supabase';
 
