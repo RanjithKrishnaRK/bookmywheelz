@@ -1,7 +1,8 @@
+iimport { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { supabase, rupees, type Car } from '@/lib/supabase';
 
-export default async function CarPage({ params }: { params: Promise<{ id: string }> }) {
+async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const { data } = await supabase.from('cars').select('*, car_photos(url, sort)').eq('id', id).maybeSingle();
   if (!data) notFound();
@@ -25,5 +26,13 @@ export default async function CarPage({ params }: { params: Promise<{ id: string
       </ul>
       <button className="btn" disabled>Booking opens in Stage 2</button>
     </main>
+  );
+}
+
+export default function CarPage({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={<main className="wrap"><p>Loading car…</p></main>}>
+      <CarDetails params={params} />
+    </Suspense>
   );
 }

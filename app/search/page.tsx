@@ -1,9 +1,10 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { supabase, rupees, type Car } from '@/lib/supabase';
 
 type SP = { [k: string]: string | undefined };
 
-export default async function Search({ searchParams }: { searchParams: Promise<SP> }) {
+   async function SearchResults({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
   let q = supabase.from('cars').select('*, car_photos(url, sort)').eq('status', 'approved');
   if (sp.city) q = q.ilike('city', `%${sp.city.trim()}%`);
@@ -56,3 +57,10 @@ export default async function Search({ searchParams }: { searchParams: Promise<S
     </main>
   );
 }
+   export default function Search({ searchParams }: { searchParams: Promise<SP> }) {
+     return (
+       <Suspense fallback={<main className="wrap"><p>Loading cars…</p></main>}>
+         <SearchResults searchParams={searchParams} />
+       </Suspense>
+     );
+   }
