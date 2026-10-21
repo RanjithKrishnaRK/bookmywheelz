@@ -1,6 +1,6 @@
 # BookMyWheelz Stage 1: setup
 
-1. Create a free project at supabase.com. Open SQL Editor, paste `supabase/migrations/0001_stage1.sql`, click Run.
+1. Create a free project at supabase.com. Open SQL Editor and run the files in `supabase/migrations/` IN ORDER, one at a time: `0001_stage1.sql`, then `0002_bookings.sql` (bookings, availability, overlap protection). Never edit a migration that has already been run; add a new numbered file instead.
 2. Supabase > Project Settings > API: copy the Project URL and the anon public key.
 3. In a terminal:
 ```
