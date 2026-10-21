@@ -1,5 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
+// Cookie-less anon client for PUBLIC reads in server components (search, car detail).
+// It never carries a user session, so those pages stay independent of request cookies.
+// For anything user-specific use lib/supabase/browser.ts (client) or lib/supabase/server.ts (server).
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

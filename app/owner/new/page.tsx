@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabaseBrowser as supabase } from '@/lib/supabase/browser';
 
 const TYPES = ['hatchback','sedan','suv','muv','luxury'];
 

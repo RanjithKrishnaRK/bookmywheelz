@@ -1,15 +1,19 @@
 'use client';
-import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { supabaseBrowser as supabase } from '@/lib/supabase/browser';
 
-export default function Login() {
+function LoginForm() {
+  const failed = useSearchParams().get('error') === 'link';
   const [email, setEmail] = useState('');
-  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(
+    failed ? { ok: false, text: 'That sign-in link is invalid or expired. Request a new one (open it in the same browser you requested it from).' } : null
+  );
   const [busy, setBusy] = useState(false);
 
   async function send() {
     setBusy(true);
-    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${location.origin}/owner/new` } });
+    const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${location.origin}/auth/callback?next=/owner/new` } });
     setMsg(error ? { ok: false, text: error.message } : { ok: true, text: 'Check your inbox for the sign-in link.' });
     setBusy(false);
   }
@@ -20,5 +24,13 @@ export default function Login() {
       <button className="btn" onClick={send} disabled={busy || !email.includes('@')}>Email me a sign-in link</button>
       {msg && <p role={msg.ok ? 'status' : 'alert'} className={msg.ok ? '' : 'err'}>{msg.text}</p>}
     </div></main>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<main className="wrap"><p>Loading…</p></main>}>
+      <LoginForm />
+    </Suspense>
   );
 }
