@@ -126,7 +126,7 @@ export default function BookingWidget({ car }: { car: BookingCar }) {
           ? <Link className="btn" href={`/login?next=${encodeURIComponent(`/cars/${car.id}`)}`}>Sign in to book</Link>
           : <button className="btn" disabled={!canSubmit}>{busy ? 'Sending…' : car.instant_book ? 'Book instantly' : 'Request to book'}</button>}
         <p className="note">{car.instant_book ? 'This owner accepts bookings instantly.' : 'The owner must accept before you pay. You will not be charged now.'}</p>
-        {msg && <p role={msg.ok ? 'status' : 'alert'} className={msg.ok ? 'ok' : 'err'}>{msg.text} {msg.ok && <Link href="/renter/bookings">View my trips</Link>}</p>}
+        {msg && <p role={msg.ok ? 'status' : 'alert'} className={msg.ok ? 'ok' : 'err'}>{msg.text}{msg.ok && <> <Link href="/renter/bookings">View my trips</Link></>}</p>}
       </form>
 
       {upcoming.length > 0 && (
