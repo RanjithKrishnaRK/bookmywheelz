@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <header className="bar">
           <Link href="/" className="logo">BookMyWheelz</Link>
-          <nav><Link href="/search">Find a car</Link><Link href="/owner/new">List your car</Link><AuthNav /></nav>
+          <nav><Link href="/search">Find a car</Link><Link href="/owner/new">List your car</Link><Link href="/renter/bookings">My trips</Link><AuthNav /></nav>
         </header>
         {children}
       </body>

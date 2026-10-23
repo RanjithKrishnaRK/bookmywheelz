@@ -42,3 +42,15 @@ input,select,textarea{font:inherit;padding:.55rem .6rem;border:1px solid var(--l
 .note{color:var(--mute);font-size:.88rem;margin:0}.ok{color:var(--teal)}
 @media (prefers-color-scheme:dark){.ok{color:#7fd6cf}}
 .bar button{background:none;border:0;color:inherit;font:inherit;cursor:pointer;margin-left:1rem;padding:0}
+
+.stack{display:grid;gap:.9rem}
+.trip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.9rem 1.1rem}.trip p{margin:.35rem 0}
+.trip-head{display:flex;justify-content:space-between;align-items:start;gap:.8rem}.trip-head h3{margin:0}
+.badge{font-size:.8rem;font-weight:700;padding:.15rem .6rem;border-radius:99px;border:1px solid var(--line);white-space:nowrap}
+.b-requested,.b-approved,.b-payment_pending{background:color-mix(in srgb,var(--amber) 28%,transparent);border-color:var(--amber)}
+.b-confirmed,.b-active,.b-returned,.b-completed{background:color-mix(in srgb,var(--teal) 15%,transparent);border-color:var(--teal);color:var(--teal)}
+@media (prefers-color-scheme:dark){.b-confirmed,.b-active,.b-returned,.b-completed{color:#7fd6cf;border-color:#7fd6cf}}
+.b-rejected,.b-cancelled,.b-disputed{border-color:var(--bad);color:var(--bad)}
+.b-expired{color:var(--mute)}
+.actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.6rem}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
