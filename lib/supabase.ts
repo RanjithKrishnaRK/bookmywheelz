@@ -9,7 +9,7 @@ export const supabase = createClient(
 );
 
 export type Car = {
-  id: string; title: string; make: string; model: string; year: number;
+  id: string; owner_id: string; instant_book: boolean; title: string; make: string; model: string; year: number;
   car_type: string; fuel: string; seats: number; transmission: string;
   city: string; area: string | null; description: string | null;
   price_per_day: number; km_limit_per_day: number | null; security_deposit: number;

@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { supabase, rupees, type Car } from '@/lib/supabase';
+import BookingWidget from '@/components/BookingWidget';
 
 async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -9,7 +10,8 @@ async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
   const c = data as Car;
   const photos = [...(c.car_photos ?? [])].sort((a, b) => a.sort - b.sort);
   return (
-    <main className="wrap">
+    <main className="wrap layout">
+      <div>
       <h1>{c.title}</h1>
       <p>{c.year} {c.make} {c.model} · {c.city}{c.area ? `, ${c.area}` : ''}</p>
       <div className="gallery">{photos.map(p => <img key={p.url} src={p.url} alt={c.title} loading="lazy" />)}</div>
@@ -24,7 +26,8 @@ async function CarDetails({ params }: { params: Promise<{ id: string }> }) {
         <li>Fuel policy: {c.fuel_policy}</li>
         <li>Airport pickup: {c.airport_pickup ? 'Yes' : 'No'} · Pets: {c.pet_friendly ? 'Yes' : 'No'} · Delivery: {c.delivery_available ? 'Yes' : 'No'}</li>
       </ul>
-      <button className="btn" disabled>Booking opens in Stage 2</button>
+      </div>
+      <BookingWidget car={{ id: c.id, owner_id: c.owner_id, price_per_day: c.price_per_day, security_deposit: c.security_deposit, min_rental_days: c.min_rental_days, km_limit_per_day: c.km_limit_per_day, instant_book: c.instant_book }} />
     </main>
   );
 }

@@ -31,3 +31,14 @@ input,select,textarea{font:inherit;padding:.55rem .6rem;border:1px solid var(--l
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem;margin-bottom:1rem}.gallery img{width:100%;border-radius:8px}
 @media(max-width:520px){.two{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:no-preference){.car{transition:border-color .15s}}
+
+.layout{display:grid;gap:1.5rem}@media(min-width:860px){.layout{grid-template-columns:minmax(0,1fr) 340px;align-items:start}}
+.book{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem}
+@media(min-width:860px){.book{position:sticky;top:1rem}}
+.book h2 small{font:400 .9rem 'DM Sans',sans-serif;color:var(--mute)}
+.book .err{padding:.6rem .8rem;text-align:left;margin:0}
+.sum{display:grid;gap:.35rem;margin:.2rem 0}.sum div{display:flex;justify-content:space-between;gap:1rem}.sum dt,.sum dd{margin:0}
+.sum .total{font-weight:700;border-top:1px solid var(--line);padding-top:.4rem}
+.note{color:var(--mute);font-size:.88rem;margin:0}.ok{color:var(--teal)}
+@media (prefers-color-scheme:dark){.ok{color:#7fd6cf}}
+.bar button{background:none;border:0;color:inherit;font:inherit;cursor:pointer;margin-left:1rem;padding:0}
