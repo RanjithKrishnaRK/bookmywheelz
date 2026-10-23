@@ -43,11 +43,12 @@ export async function POST(request: NextRequest, ctx: { params: Promise<{ id: st
   // caller owns this booking AND it is still 'requested' AND its deadline has not passed. Two things this buys:
   //  - A renter or stranger can never match (owner_id filter), so there is no "check, then update" gap to exploit.
   //  - Two simultaneous clicks cannot both succeed (the second finds status != 'requested' and matches 0 rows).
-  const upd = await db.from('bookings').update(patch).eq('id', id.data).eq('owner_id', user.id).eq('status', 'requested').gt('expires_at', now.toISOString()).select('id, status, expires_at').maybeSingle();
+  const upd = await db.from('bookings').update(patch).eq('id', id.data).eq('owner_id', user.id).eq('status', 'requested').gt('expires_at', now.toISOString()).gt('start_at', now.toISOString()).select('id, status, expires_at').maybeSingle();
 
   if (upd.error) {
     // The database refused the approval: another booking already holds (or the owner blocked) these dates.
     if (upd.error.code === '23P01') return apiError(409, 'dates_unavailable', 'These dates are no longer available, so this request cannot be approved.');
+    if (upd.error.code === '23514') return apiError(409, 'not_available', 'This request or listing is no longer available for approval.');
     return serverError('booking respond update', upd.error);
   }
 

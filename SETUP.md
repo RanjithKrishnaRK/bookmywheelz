@@ -6,6 +6,8 @@ Create a project at supabase.com. In the SQL Editor run the files in `supabase/m
 1. `0001_stage1.sql` (profiles, cars, photos, storage)
 2. `0002_bookings.sql` (bookings, availability blocks, platform settings, double-booking protection)
 3. `0003_audit_log.sql` (append-only audit trail)
+4. `0004_booking_expiry.sql` (expired holds and pickup deadlines)
+5. `0005_profile_role_permissions.sql` (prevent self-service role escalation)
 
 Never edit a migration that has already been run; add a new numbered file instead.
 

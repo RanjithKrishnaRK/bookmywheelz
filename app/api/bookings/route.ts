@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
   // so nothing sits (or holds a car) forever.
   const instant = car.instant_book === true;
   const status = instant ? 'approved' : 'requested';
-  const expiresAt = new Date(now.getTime() + (instant ? s.payment_window_minutes * 60_000 : s.owner_response_hours * 3_600_000)).toISOString();
+  const expiresAt = new Date(Math.min(startAt.getTime(), now.getTime() + (instant ? s.payment_window_minutes * 60_000 : s.owner_response_hours * 3_600_000))).toISOString();
 
   const ins = await db.from('bookings').insert({
     car_id: carId, renter_id: user.id, owner_id: car.owner_id, start_at: startIso, end_at: endIso,

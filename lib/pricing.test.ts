@@ -91,6 +91,11 @@ describe('deposit, delivery and km', () => {
 });
 
 describe('rejects bad or hostile input', () => {
+  it('rejects quotes and distance allowances that cannot be stored in PostgreSQL integer columns', () => {
+    expect(err(base({ perDay: 8_000_000 }))).toBe('invalid_input');
+    expect(err(base({ deposit: 22_000_000 }))).toBe('invalid_input');
+    expect(err(base({ km: 1_000_000_000 }))).toBe('invalid_input');
+  });
   it.each([
     ['end before start', base({ startAt: at(48), endAt: at(24) }), 'invalid_dates'],
     ['end equals start', base({ startAt: at(24), endAt: at(24) }), 'invalid_dates'],

@@ -69,9 +69,9 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000;
 // Longer rentals are the Stage 4 "long-term plans" feature (weekly/monthly pricing). Until that exists,
 // cap it so a typo (year 2207) cannot produce an absurd charge. Change deliberately, not casually.
 export const MAX_RENTAL_DAYS = 30;
-// Hard ceiling on any single amount (Rs 10 crore). It exists so intermediate products like
-// amount x basis-points stay far below Number.MAX_SAFE_INTEGER (9e15), where integers stay exact.
-const MAX_AMOUNT_PAISE = 10_000_000_000;
+// Match the database's signed 32-bit integer columns. Intermediate products like
+// amount x basis-points also stay below Number.MAX_SAFE_INTEGER, where integers stay exact.
+const MAX_AMOUNT_PAISE = 2_147_483_647; // PostgreSQL integer columns
 
 const fail = (code: PricingErrorCode, message: string): PricingResult => ({ ok: false, code, message });
 const isMoney = (n: unknown): n is number => typeof n === 'number' && Number.isSafeInteger(n) && n >= 0 && n <= MAX_AMOUNT_PAISE;
@@ -138,6 +138,8 @@ export function calculateQuote(input: PricingInput): PricingResult {
   const renterTotalPaise = base + renterCommissionPaise + settings.renterServiceFeePaise;
   const amountDuePaise = renterTotalPaise + depositPaise;
   if (![ownerPayoutPaise, renterTotalPaise, amountDuePaise].every(isMoney)) return fail('invalid_input', 'Amount is too large.');
+  const kmLimit = car.kmLimitPerDay === null ? null : car.kmLimitPerDay * days;
+  if (kmLimit !== null && (!Number.isSafeInteger(kmLimit) || kmLimit > 2_147_483_647)) return fail('invalid_input', 'Distance allowance is too large.');
 
   return {
     ok: true,
@@ -145,7 +147,7 @@ export function calculateQuote(input: PricingInput): PricingResult {
       days, pricePaise, deliveryFeePaise, platformFeePaise,
       renterServiceFeePaise: settings.renterServiceFeePaise,
       ownerPayoutPaise, depositPaise,
-      kmLimit: car.kmLimitPerDay === null ? null : car.kmLimitPerDay * days,
+      kmLimit,
       ownerCommissionPaise, renterCommissionPaise, renterTotalPaise, amountDuePaise,
     },
   };
