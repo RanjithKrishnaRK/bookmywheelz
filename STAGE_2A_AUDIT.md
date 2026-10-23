@@ -90,3 +90,32 @@ owner's availability. Verify expired-hold picker recovery, paused-car approval
 rejection and overlapping approvals. Confirm existing profile editors only use
 allowed contact fields. Back up and review the target database before applying
 new migrations. Keep this PR unmerged until those checks are complete.
+
+## Specification follow-up — 23 October 2026
+
+The complete 14-page PDF has now been reviewed. It defines Part 2A as availability,
+booking requests, owner responses, instant booking, expiry, overlap protection,
+owner requests and renter bookings pages. Parts 2B and 2C cover payments/deposits
+and wallets/withdrawals respectively. The earlier missing-specification limitation
+is resolved for this review.
+
+The user reports all five permission checks and both new SQL regression scripts
+passed in BookMyWheelz Test. This is user-reported remote validation, not a direct
+inspection of that database. The complete overlap/concurrency suite and real
+owner/renter browser flow remain unverified.
+
+Added an owner instant-book toggle at /owner/cars with an authenticated server
+endpoint, strict input validation, atomic owner filtering, audit recording and a
+30-change/hour best-effort rate limit based on audit history. Only instant_book is
+updated, so listing moderation state and existing bookings are preserved. No new
+migration is required. Auditing/rate-limit concurrency limitations still apply.
+
+Validation now passes 200 tests across 12 files. Production build passes with local
+placeholder Supabase values; lint has zero errors and the same two existing image
+warnings. The test configuration now includes route *.test.ts files.
+
+The owner date-block screen uses datetime inputs and a block list; a month-grid
+calendar is not implemented. Delivery pricing remains zero until a trusted
+owner-configured delivery source exists. Stage 2A is not declared fully accepted:
+preview owner/renter checks, the full database race suite and these product gaps
+remain. Do not start real payment operations during this verification.

@@ -6,5 +6,5 @@ import { fileURLToPath } from 'node:url';
 // file; everything else (pricing, validation, guards) stays in plain Node, which is faster and stricter.
 export default defineConfig({
   resolve: { alias: { '@': fileURLToPath(new URL('.', import.meta.url)) } },
-  test: { include: ['lib/**/*.test.ts', 'components/**/*.test.tsx', 'app/**/*.test.tsx'] },
+  test: { include: ['lib/**/*.test.ts', 'components/**/*.test.tsx', 'app/**/*.test.tsx', 'app/**/*.test.ts'] },
 });
